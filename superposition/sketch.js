@@ -3,11 +3,12 @@ var togs, sings;
 var streaks, vectors, streams;
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
     //  createCanvas(960,600); // nexus 7
+    createCanvas(windowWidth, windowHeight);
+    frameRate(30);
 
     // set up global button and grid sizes
-    bWidth = round(min(width, height) / 8);
+    bWidth = round(min(width/10.5, height/8));
     bit = round(0.1 * bWidth);
     bHeight = bWidth - bit;
     intvl = round(bWidth / 2);
@@ -213,7 +214,7 @@ function Singularity(name, x, y) {
     this.y = y;
     this.dy = bHeight;
     this.icon = loadImage("data/" + name + ".png");
-    this.icon.resize(bHeight - bit, 0);
+    this.icon.resize(0, bHeight - 2 * bit);
     this.active = false;
     this.hasChanged = false;
     this.points = [];
