@@ -5,6 +5,7 @@ function setup() {
 
     // set display parameters
     bit = min(width, height) / 80
+    offset = 50*bit
     strokeWeight(0.5 * bit);
     textSize(4 * bit);
     textAlign(RIGHT);
@@ -31,11 +32,14 @@ function draw() {
     vline.draw()
 
     // draw text
-    fill(0);
     noStroke();
+    fill(255);
+    rect(width-offset,0,offset,22*bit)
+    fill(150);
     text("angle of attack: " + degrees(vline.aoa).toFixed(1) + "\u00B0", width - bit, 5 * bit)
     text("maximum camber: " + (vline.cam * 100).toFixed(1) + "%", width - bit, 10 * bit)
-    text("lift coefficient: " + vline.lift.toFixed(2), width - bit, 15 * bit)
+    fill(50,150,50);
+    text("lift coefficient: " + vline.lift.toFixed(2) +" ", width - bit, 15 * bit)
     text("center of effort: " + vline.pcen.x.toFixed(0) + "%", width - bit, 20 * bit)
 }
 
@@ -167,23 +171,23 @@ function VortexLine(x0, x1, num) {
         stroke(150, 50);
         line(this.points[0].x, this.points[0].y, this.points[this.num].x, this.points[this.num].y)
 
+        // vortex panels
+        stroke(255, 100, 100);
+        for (var i = 0; i < this.num; i++) this.panels[i].draw();
+
         // control points
-        fill(255);
         stroke(255, 155, 50, 50);
         line(this.control[0].x, this.control[0].y, this.control[1].x, this.control[1].y, bit, bit);
         line(this.control[2].x, this.control[2].y, this.control[3].x, this.control[3].y, bit, bit);
+        fill(255);
         ellipse(this.control[1].x, this.control[1].y, 2 * bit, 2 * bit);
         ellipse(this.control[2].x, this.control[2].y, 2 * bit, 2 * bit);
-
-        // vortex panels and end points
-        stroke(255, 100, 100);
-        for (var i = 0; i < this.num; i++) this.panels[i].draw();
         ellipse(this.control[0].x, this.control[0].y, 2 * bit, 2 * bit);
         ellipse(this.control[3].x, this.control[3].y, 2 * bit, 2 * bit);
 
-
-        // center of effort
+        // force
         stroke(100, 255, 100, 200);
+        line(this.cen.x, this.cen.y, this.cen.x, this.cen.y-this.lift*this.l/10)
         ellipse(this.cen.x, this.cen.y, 2 * bit, 2 * bit);
     }
 }
