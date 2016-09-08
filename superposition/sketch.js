@@ -90,6 +90,9 @@ function hy() { // nearest grid point in y
     return round(mouseY / intvl) * intvl;
 }
 
+function resize(icon) {
+    icon.resize(0, bHeight - 2 * bit);
+}
 
 // Toggle Buttons
 function Toggle(name, x, y) {
@@ -98,8 +101,7 @@ function Toggle(name, x, y) {
     this.dx = bWidth;
     this.y = y;
     this.dy = bHeight;
-    this.icon = loadImage("data/" + name + ".png");
-    this.icon.resize(0, bHeight - 2 * bit);
+    this.icon = loadImage("data/" + name + ".png", resize);
     this.active = false;
     this.hasChanged = false;
 
@@ -180,7 +182,7 @@ function Streaklines() {
 
         stroke(color(0, 100, 255));
         strokeWeight(bit / 2);
-        for (var i = 0; i < this.num; i++) {
+        for (var i = 0; i < this.particles.length; i++) {
             this.particles[i].draw();
             this.particles[i].update();
         }
@@ -223,8 +225,7 @@ function Singularity(name, x, y) {
     this.dx = bWidth;
     this.y = y;
     this.dy = bHeight;
-    this.icon = loadImage("data/" + name + ".png");
-    this.icon.resize(0, bHeight - 2 * bit);
+    this.icon = loadImage("data/" + name + ".png", resize);
     this.active = false;
     this.hasChanged = false;
     this.points = [];
