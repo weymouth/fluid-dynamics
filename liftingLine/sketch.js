@@ -5,10 +5,11 @@ function setup() {
 
     // set display parameters
     bit = min(width, height) / 80
-    offset = 50*bit
+    offset = 50 * bit
     strokeWeight(0.5 * bit);
     textSize(4 * bit);
     textAlign(RIGHT);
+    pressed = false;
 
     // initialize view and objects
     streaks = new Streaklines();
@@ -34,17 +35,28 @@ function draw() {
     // draw text
     noStroke();
     fill(255);
-    rect(width-offset,0,offset,22*bit)
+    rect(width - offset, 0, offset, 22 * bit)
     fill(150);
     text("angle of attack: " + degrees(vline.aoa).toFixed(1) + "\u00B0", width - bit, 5 * bit)
     text("maximum camber: " + (vline.cam * 100).toFixed(1) + "%", width - bit, 10 * bit)
-    fill(50,150,50);
-    text("lift coefficient: " + vline.lift.toFixed(2) +" ", width - bit, 15 * bit)
+    fill(50, 150, 50);
+    text("lift coefficient: " + vline.lift.toFixed(2) + " ", width - bit, 15 * bit)
     text("center of effort: " + vline.pcen.x.toFixed(0) + "%", width - bit, 20 * bit)
 }
 
 function mousePressed() {
+    pressed = true;
     vline.mousePressed();
+    return false;
+}
+
+function mouseReleased() {
+    pressed = false;
+    return false;
+}
+
+function touchMoved() {
+    return false;
 }
 
 // velocity function including free-stream
@@ -102,7 +114,7 @@ function VortexLine(x0, x1, num) {
 
     // Update vortex line
     this.update = function() {
-        if (mouseIsPressed && this.moving >= 0) {
+        if (pressed && this.moving >= 0) {
             var i = this.moving;
 
             // highlight moving point
@@ -187,7 +199,7 @@ function VortexLine(x0, x1, num) {
 
         // force
         stroke(100, 255, 100, 200);
-        line(this.cen.x, this.cen.y, this.cen.x, this.cen.y-this.lift*this.l/10)
+        line(this.cen.x, this.cen.y, this.cen.x, this.cen.y - this.lift * this.l / 10)
         ellipse(this.cen.x, this.cen.y, 2 * bit, 2 * bit);
     }
 }
@@ -248,6 +260,9 @@ function Streaklines() {
     for (var i = 0; i < 500; i++) this.particles[i] = new Particle();
 
     this.draw = function() {
+        var fr = 30 - frameRate();
+        if (fr > 0 && this.particles.length > 50) this.particles.splice(-fr, fr);
+
         stroke(0, 100, 255);
         for (var i = 0; i < this.particles.length; i++) {
             this.particles[i].draw();
