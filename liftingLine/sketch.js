@@ -262,6 +262,8 @@ function Streaklines() {
     this.draw = function() {
         var fr = 30 - frameRate();
         if (fr > 0 && this.particles.length > 50) this.particles.splice(-fr, fr);
+        if (fr <= 0 && this.particles.length < 500)
+            this.particles.push(new Particle());
 
         stroke(0, 100, 255);
         for (var i = 0; i < this.particles.length; i++) {

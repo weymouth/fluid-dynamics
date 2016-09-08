@@ -8,7 +8,7 @@ function setup() {
     frameRate(30);
 
     // set up global button and grid sizes
-    bWidth = round(min(width/10.5, height/8));
+    bWidth = round(min(width / 10.5, height / 8));
     bit = round(0.1 * bWidth);
     bHeight = bWidth - bit;
     intvl = round(bWidth / 2);
@@ -64,12 +64,17 @@ function mousePressed() {
     togs.checkZone();
     sings.checkZone();
     sings.checkPoints(); // remove sing and activate
+    return false;
 }
 
 function mouseReleased() {
     sings.add(); // place sing and deactivate
+    return false;
 }
 
+function touchMoved() {
+    return false;
+}
 
 function velocity(x, y) {
     var p = sings.velocity(x, y);
@@ -168,6 +173,11 @@ function Streaklines() {
     for (var i = 0; i < this.num; i++) this.particles[i] = new Particle();
 
     this.draw = function() {
+        var fr = 30 - frameRate();
+        if (fr > 0 && this.particles.length > 50) this.particles.splice(-fr, fr);
+        if (fr <= 0 && this.particles.length < 500)
+            this.particles.push(new Particle());
+
         stroke(color(0, 100, 255));
         strokeWeight(bit / 2);
         for (var i = 0; i < this.num; i++) {
