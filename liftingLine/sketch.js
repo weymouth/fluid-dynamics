@@ -2,6 +2,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     //  createCanvas(960,600); // nexus 7
     frameRate(30);
+    fr = 30;
 
     // set display parameters
     bit = min(width, height) / 80
@@ -29,7 +30,8 @@ function draw() {
     vline.update();
 
     // draw objects
-    streaks.draw();
+    fr += 0.01 * (frameRate() - fr);
+    streaks.draw(fr-28);
     vline.draw()
 
     // draw text
@@ -42,6 +44,12 @@ function draw() {
     fill(50, 150, 50);
     text("lift coefficient: " + vline.lift.toFixed(2) + " ", width - bit, 15 * bit)
     text("center of effort: " + vline.pcen.x.toFixed(0) + "%", width - bit, 20 * bit)
+
+
+    // Print frameRate for profiling 
+    // fill(0);
+    // textSize(32);
+    // text("fr = " + fr.toFixed(1) + ", n = " + streaks.particles.length, width, height / 2);
 }
 
 function mousePressed() {
@@ -259,11 +267,9 @@ function Streaklines() {
     this.particles = [];
     for (var i = 0; i < 500; i++) this.particles[i] = new Particle();
 
-    this.draw = function() {
-        var fr = 30 - frameRate();
-        if (fr > 0 && this.particles.length > 50) this.particles.splice(-fr, fr);
-        if (fr <= 0 && this.particles.length < 500)
-            this.particles.push(new Particle());
+    this.draw = function(fr) {
+        if (fr < -1 && this.particles.length > 50) this.particles.splice(-1,1);
+        if (fr > 1 && this.particles.length < 500) this.particles.push(new Particle());
 
         stroke(0, 100, 255);
         for (var i = 0; i < this.particles.length; i++) {
