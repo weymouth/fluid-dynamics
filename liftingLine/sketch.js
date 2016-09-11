@@ -1,11 +1,10 @@
 function setup() {
-    createCanvas(windowWidth, windowHeight);
-    //  createCanvas(960,600); // nexus 7
+    createCanvas(windowWidth, windowWidth/2);
     frameRate(30);
-    fr = 30;
+    fr = 25;
 
     // set display parameters
-    bit = min(width, height) / 80
+    bit = width / 160
     offset = 50 * bit
     strokeWeight(0.5 * bit);
     textSize(4 * bit);
@@ -30,8 +29,8 @@ function draw() {
     vline.update();
 
     // draw objects
-    fr += 0.01 * (frameRate() - fr);
-    streaks.draw(fr-28);
+    fr += 0.1 * (frameRate() - fr);
+    streaks.draw(fr-25);
     vline.draw()
 
     // draw text
@@ -46,7 +45,7 @@ function draw() {
     text("center of effort: " + vline.pcen.x.toFixed(0) + "%", width - bit, 20 * bit)
 
 
-    // Print frameRate for profiling 
+    // // print frameRate for profiling 
     // fill(0);
     // textSize(32);
     // text("fr = " + fr.toFixed(1) + ", n = " + streaks.particles.length, width, height / 2);
@@ -265,10 +264,10 @@ function VortexPanel(x0, x1) {
 // Streakline class
 function Streaklines() {
     this.particles = [];
-    for (var i = 0; i < 500; i++) this.particles[i] = new Particle();
+    for (var i = 0; i < 50; i++) this.particles[i] = new Particle();
 
     this.draw = function(fr) {
-        if (fr < -1 && this.particles.length > 50) this.particles.splice(-1,1);
+        if (fr < -1 && this.particles.length > 50) this.particles.splice(1,-1);
         if (fr > 1 && this.particles.length < 500) this.particles.push(new Particle());
 
         stroke(0, 100, 255);
