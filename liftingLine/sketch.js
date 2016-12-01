@@ -122,17 +122,30 @@ function VortexLine(x0, x1, num) {
     // Update vortex line
     this.update = function() {
         if (pressed && this.moving >= 0) {
-            var i = this.moving;
 
             // highlight moving point
             noStroke();
             fill(0, 20);
-            ellipse(this.control[i].x, this.control[i].y, 8 * bit, 8 * bit);
-
-            // move point
-            this.control[i].add(createVector(mouseX, mouseY).sub(this.pressPoint));
+            ellipse(this.control[this.moving].x, this.control[this.moving].y, 8 * bit, 8 * bit);
+            
+            // motion vector
+            var dp = createVector(mouseX, mouseY).sub(this.pressPoint)
+            
+            // move point(s)
+            if(this.moving == 1 || this.moving == 2) {
+                this.control[this.moving].add(dp);
+            } else if (this.moving == 3) {
+                for (var i = 0; i < 4 ; i++) {
+                    this.control[i].add(dp);
+                }
+            } else {
+                this.control[0].add(dp);
+                this.control[2].add(dp.mult(1/3));
+                this.control[1].add(dp.mult(2));
+            }
+            
+            // reset press point and geometry
             this.pressPoint = createVector(mouseX, mouseY);
-
             this.geom();
         }
 
