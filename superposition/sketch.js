@@ -5,10 +5,10 @@ var streaks, vectors, streams;
 function setup() {
     // createCanvas(960, 600); // nexus 7
     createCanvas(windowWidth, windowHeight);
-    frameRate(30);
+//    frameRate(30);
 
     // set up global button and grid sizes
-    bWidth = 90//round(min(width / 10.5, height / 8)); // scale buttons to icons
+    bWidth = 40//round(min(width / 10.5, height / 8)); // scale buttons to icons
     bit = round(0.1 * bWidth);
     bHeight = bWidth - bit;
     intvl = round(bWidth / 2);
@@ -91,7 +91,7 @@ function hy() { // nearest grid point in y
 }
 
 function resize(icon) {
-    // icon.resize(0, bHeight - 2 * bit); // waiting for safari support
+    icon.resize(0, bHeight - 2 * bit); // waiting for safari support
 }
 
 // Toggle Buttons
@@ -117,9 +117,9 @@ function Toggle(name, x, y) {
         stroke(0);
         strokeWeight(1);
         if (this.active) {
-            fill(100);
+            fill(150,150,255);
         } else {
-            fill(200);
+            fill(100,100,160);
         }
         rect(this.x, this.y, this.dx, this.dy);
         tint(0);
@@ -175,7 +175,7 @@ function Streaklines() {
     for (var i = 0; i < this.num; i++) this.particles[i] = new Particle();
 
     this.draw = function() {
-        var fr = 30 - frameRate();
+        var fr = 10 - frameRate();
         if (fr > 0 && this.particles.length > 50) this.particles.splice(-fr, fr);
         if (fr <= 0 && this.particles.length < 500)
             this.particles.push(new Particle());
@@ -238,9 +238,9 @@ function Singularity(name, x, y) {
         stroke(0);
         strokeWeight(1);
         if (this.active) {
-            fill(100);
+            fill(100,100,160);
         } else {
-            fill(200);
+            fill(150,150,255);
         }
         rect(this.x, this.y, this.dx, this.dy);
         tint(0);
@@ -262,7 +262,8 @@ function Singularity(name, x, y) {
     };
     this.inZone = function(buff) { // buffer around the zone
         if (typeof(buff) === 'undefined') buff = 0;
-        return mouseX - buff > this.x && mouseY - buff > this.y && mouseX + buff < this.x + this.dx && mouseY + buff < this.y + this.dy;
+        return (mouseX - buff > this.x && mouseY - buff > this.y && 
+                mouseX + buff < this.x + this.dx && mouseY + buff < this.y + this.dy);
     };
 
     this.add = function() {
