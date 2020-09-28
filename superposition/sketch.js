@@ -55,7 +55,7 @@ function draw() {
         background(255);
     }
 
-    // // Print frameRate for profiling 
+    // // Print frameRate for profiling
     // fill(0); textSize(32);
     // text(frameRate().toFixed(2), width/2, height/2);
 }
@@ -117,9 +117,9 @@ function Toggle(name, x, y) {
         stroke(0);
         strokeWeight(1);
         if (this.active) {
-            fill(150,150,255);
-        } else {
             fill(100,100,160);
+        } else {
+            fill(150,150,255);
         }
         rect(this.x, this.y, this.dx, this.dy);
         tint(0);
@@ -262,7 +262,7 @@ function Singularity(name, x, y) {
     };
     this.inZone = function(buff) { // buffer around the zone
         if (typeof(buff) === 'undefined') buff = 0;
-        return (mouseX - buff > this.x && mouseY - buff > this.y && 
+        return (mouseX - buff > this.x && mouseY - buff > this.y &&
                 mouseX + buff < this.x + this.dx && mouseY + buff < this.y + this.dy);
     };
 
